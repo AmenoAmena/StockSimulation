@@ -1,0 +1,14 @@
+{% extends 'Content/base.html' %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% block body %}
+
+{% for key, value in prices_dict %}
+    <h2>Company Name:{{key}}, Price: ${{value}}</h2>
+    <br>
+{% endfor %}
+
+{% endblock body %}
