@@ -67,4 +67,4 @@ class Price:
         return self.get_price("META")
 
 
-print(getting_prices())
+#print(getting_prices())
