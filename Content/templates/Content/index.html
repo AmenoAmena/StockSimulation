@@ -6,9 +6,16 @@
 
 {% block body %}
 
-{% for key, value in prices_dict %}
-    <h2>Company Name:{{key}}, Price: ${{value}}</h2>
-    <br>
-{% endfor %}
+<h1>Stock Prices</h1>
+<p>Google Price: ${{ google }}</p>
+<p>Apple Price: ${{ apple }}</p>
+<p>Microsoft Price: ${{ microsoft }}</p>
+<p>Amazon Price: ${{ amazon }}</p>
+<p>Tesla Price: ${{ tesla }}</p>
+<p>NVIDIA Price: ${{ nvidia }}</p>
+<p>Visa Price: ${{ visa }}</p>
+<p>Coca-Cola Price: ${{ coca_cola }}</p>
+<p>Intel Price: ${{ intel }}</p>
+<p>Meta Price: ${{ meta }}</p>
 
 {% endblock body %}

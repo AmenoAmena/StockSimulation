@@ -13,19 +13,19 @@ import yfinance as yf
 #Visa Inc. (V)
 
 
-#def getting_prices():
-#    prices = {}
-#    ticker_symbols = ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "META", "NVDA", "KO", "INTC", "V"]
-#    
-#    for ticker in ticker_symbols:
-#        stock = yf.Ticker(ticker)
-#        current_price = stock.history(period="1d")['Close'].iloc[-1]
-#        rounded_price = round(current_price, 2)
-#        company_name = stock.info['longName']  
-#        
-#        prices[company_name] = rounded_price
-#    
-#    return prices
+def getting_prices():
+    prices = {}
+    ticker_symbols = ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "META", "NVDA", "KO", "INTC", "V"]
+    
+    for ticker in ticker_symbols:
+        stock = yf.Ticker(ticker)
+        current_price = stock.history(period="1d")['Close'].iloc[-1]
+        rounded_price = round(current_price, 2)
+        company_name = stock.info['longName']  
+        
+        prices[company_name] = rounded_price
+    
+    return prices
 
 class Price:
     def __init__(self):
@@ -50,18 +50,21 @@ class Price:
     
     def tesla_price(self):
         return self.get_price("TSLA")
-            
-    def Nvidia_price(self):
+    
+    def nvidia_price(self):
         return self.get_price("NVDA")
 
-    def Visa_price(self):
-        return self.get_price("TSLA")
+    def visa_price(self):
+        return self.get_price("V")
 
-    def Coca-Cola_price(self):
+    def coca_cola_price(self):
         return self.get_price("KO")
 
-    def Intel_price(self):
+    def intel_price(self):
         return self.get_price("INTC")
-        
-    def Meta_price(self):
+    
+    def meta_price(self):
         return self.get_price("META")
+
+
+print(getting_prices())
