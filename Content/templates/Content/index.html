@@ -1,21 +1,51 @@
 {% extends 'Content/base.html' %}
+{% load static %}
 
 {% block title %}
+
+<title>Portfolio</title>
+<link rel="stylesheet" href="{% static 'Content/css/index.css' %}">
 
 {% endblock title %}
 
 {% block body %}
 
-<h1>Stock Prices</h1>
-<p>Google Price: ${{ google }}</p>
-<p>Apple Price: ${{ apple }}</p>
-<p>Microsoft Price: ${{ microsoft }}</p>
-<p>Amazon Price: ${{ amazon }}</p>
-<p>Tesla Price: ${{ tesla }}</p>
-<p>NVIDIA Price: ${{ nvidia }}</p>
-<p>Visa Price: ${{ visa }}</p>
-<p>Coca-Cola Price: ${{ coca_cola }}</p>
-<p>Intel Price: ${{ intel }}</p>
-<p>Meta Price: ${{ meta }}</p>
+<header>
+    <h1>Stock Trading Game</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#trade">Trade</a></li>
+        <li><a href="#performance">Performance</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="portfolio">
+        <h2>Portfolio Overview</h2>
+        <div class="overview">
+            <div class="overview-item">
+                <span>Account Value</span>
+                <strong>$10,000.00</strong>
+            </div>
+            <div class="overview-item">
+                <span>Today's Change</span>
+                <strong>$0.00 (0.00%)</strong>
+            </div>
+            <div class="overview-item">
+                <span>Annual Return</span>
+                <strong>0.00%</strong>
+            </div>
+            <div class="overview-item">
+                <span>Buying Power</span>
+                <strong>$10,000.00</strong>
+            </div>
+            <div class="overview-item">
+                <span>Cash</span>
+                <strong>$10,000.00</strong>
+            </div>
+        </div>
+    </section>
+</main>
 
 {% endblock body %}
