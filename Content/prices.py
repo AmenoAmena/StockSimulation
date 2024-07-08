@@ -27,3 +27,5 @@ def getting_prices():
     
     return prices
 
+print(getting_prices())
+
