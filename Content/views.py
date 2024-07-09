@@ -12,8 +12,10 @@ def index(request):
     user_money = user_instance.get_total_stock_value() + user.money
     stock_value = user_instance.get_total_stock_value()
     user_cash = user.money
+    made_money = user_money - 10000
     return render(request, 'Content/index.html', {
         'user_money': user_money,
         'stock_values':stock_value,
-        'user_cash':user_cash
+        'user_cash':user_cash,
+        'made_money':made_money,
     })
