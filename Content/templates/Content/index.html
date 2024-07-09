@@ -47,6 +47,16 @@
             </div>
         </div>
     </section>
+    <section>
+        <div class="overview">
+            <div class="overview-item">
+                {% for stock in user_stocks %}
+                    <h1>{{stock.symbol}}</h1>
+                    <h2>{{stock.price}}</h2>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 </main>
 
 {% endblock body %}
