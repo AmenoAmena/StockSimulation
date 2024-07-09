@@ -49,10 +49,11 @@
     </section>
     <section>
         <div class="overview">
-            <div class="overview-item">
                 {% for stock in user_stocks %}
-                    <h1>{{stock.symbol}}</h1>
-                    <h2>{{stock.price}}</h2>
+                    <div class="overview-item">
+                        <h1>{{stock.stock}} - {{stock.quantity}}</h1>
+                        
+                    <div class="overview-item">
                 {% endfor %}
             </div>
         </div>

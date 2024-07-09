@@ -38,30 +38,34 @@ class UserStock(models.Model):
     quantity = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        if self.pk:  # Check if the object already exists
-            existing_stock_user = UserStock.objects.filter(pk=self.pk).first()
+        if self.pk:
+                existing_stock_user = UserStock.objects.filter(user=self.user, stock=self.stock).first()
             if existing_stock_user:
-                # Handle case where quantity is updated
                 quantity_difference = self.quantity - existing_stock_user.quantity
-                if quantity_difference != 0:
-                    # Update user money based on quantity difference
-                    stock_price = self.stock.price
-                    total_cost = stock_price * quantity_difference
+                stock_price = self.stock.price
+                total_cost = stock_price * quantity_difference
+                
+                if quantity_difference > 0:
                     if total_cost > 0 and self.user.money < total_cost:
                         raise ValidationError("Insufficient funds to buy stock.")
                     self.user.money -= total_cost
                     self.user.save()
+                
+                existing_stock_user.quantity = self.quantity
+                existing_stock_user.save()
+                        stock_price = self.stock.price
+                total_cost = stock_price * self.quantity
+                if self.user.money < total_cost:
+                    raise ValidationError("Insufficient funds to buy stock.")
+                self.user.money -= total_cost
+                self.user.save()
                 super().save(*args, **kwargs)
                 return
         
-        # Handle case where new stock is being added
-        stock_price = self.stock.price
-        total_cost = stock_price * self.quantity
-        if self.user.money < total_cost:
-            raise ValidationError("Insufficient funds to buy stock.")
-        self.user.money -= total_cost
-        self.user.save()
-        super().save(*args, **kwargs)
+
+
+
 
     def __str__(self):
         return f"{self.user.username} - {self.stock.symbol} ({self.quantity})"
+
