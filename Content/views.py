@@ -15,7 +15,7 @@ def index(request):
     made_money = user_money - 10000
     return render(request, 'Content/index.html', {
         'user_money': user_money,
-        'stock_values':stock_value,
+        'stock_value':stock_value,
         'user_cash':user_cash,
         'made_money':made_money,
     })
