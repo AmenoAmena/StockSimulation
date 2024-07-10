@@ -26,6 +26,13 @@
     <main>
         <section id="trade">
             <h2>Trade Stocks</h2>
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <form id="trade-form" method="post">
                 {% csrf_token %}
                 {{ form.symbol.label_tag }} {{ form.symbol }}
