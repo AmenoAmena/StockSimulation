@@ -37,33 +37,30 @@ class UserStock(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        # Check if there is an existing UserStock for this user and stock
-        existing_stock_user = UserStock.objects.filter(user=self.user, stock=self.stock).first()
-        
-        if existing_stock_user:
-            # Calculate the difference in quantity
-            quantity_difference = self.quantity - existing_stock_user.quantity
-        else:
-            # For a new stock purchase, the quantity difference is the entire quantity
-            quantity_difference = self.quantity
-        
-        stock_price = self.stock.price
-        total_cost = stock_price * quantity_difference
-        
-        if total_cost > 0 and self.user.money < total_cost:
-            raise ValidationError("Insufficient funds to buy stock.")
-        
-        self.user.money -= total_cost
-        self.user.save()
-        
-        if existing_stock_user:
-            # Update the existing UserStock
-            existing_stock_user.quantity += self.quantity
-            existing_stock_user.save()
-        else:
-            # Save a new UserStock
-            super().save(*args, **kwargs)
+#    def save(self, *args, **kwargs):
+#        existing_stock_user = UserStock.objects.filter(user=self.user, stock=self.stock).first()
+#        
+#        if existing_stock_user:
+#            quantity_difference = self.quantity - existing_stock_user.quantity
+#        else:
+#            quantity_difference = self.quantity
+#        
+#        stock_price = self.stock.price
+#        total_cost = stock_price * quantity_difference
+#        
+#        if total_cost > 0 and self.user.money < total_cost:
+#            raise ValidationError("Insufficient funds to buy stock.")
+#        
+#        self.user.money -= total_cost
+#        self.user.save()
+#        
+#        if existing_stock_user:
+#            # Update the existing UserStock
+#            existing_stock_user.quantity += self.quantity
+#            existing_stock_user.save()
+#        else:
+#            # Save a new UserStock
+#            super().save(*args, **kwargs)
 
 
 
