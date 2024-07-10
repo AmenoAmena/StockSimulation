@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from accounts.models import stock_user,UserStock
+from accounts.models import stock_user,UserStock,Stock
 from .prices import Price
 from django.contrib.auth.decorators import login_required
 from .forms import StockTrade
@@ -94,3 +94,10 @@ def sell_stock(user, stock, quantity):
         user_stock.delete()
     else:
         user_stock.save()
+
+
+def show_market(request):
+    stocks = Stock.objects.all()
+    return render(request, 'Content/market.html',{
+        'stocks':stocks
+    })

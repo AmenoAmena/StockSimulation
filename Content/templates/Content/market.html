@@ -1,0 +1,20 @@
+{% extends 'Content/base.html' %}
+
+{% block title %}
+
+    <title>Prices</title>
+
+{% endblock title %}
+
+
+{% block body %}
+
+    {% for stock in stocks %}
+
+        <h1>{{stock.symbol}}</h1>
+        <h2>{{stock.price}}</h2>
+        <hr>
+
+    {% endfor %}
+
+{% endblock body %}

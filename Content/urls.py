@@ -6,4 +6,5 @@ app_name = "Content"
 urlpatterns = [
     path('',views.index,name='index'),
     path('trade/',views.trade,name='trade'),
+    path('market/',views.show_market,name='market'),
 ]
