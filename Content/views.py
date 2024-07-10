@@ -33,7 +33,6 @@ def trade(request):
         print("Post works")
         form = StockTrade(request.POST)
         if form.is_valid():
-            print("Form is valid")
             symbol = form.cleaned_data['symbol']
             quantity = form.cleaned_data['quantity']
             action = form.cleaned_data['action']
@@ -53,8 +52,6 @@ def trade(request):
                 pass
             return redirect('Content:index')
         else:
-            print("Form is not valid")
-            print(form.errors)  
             return redirect('Content:trade')
     else:
         form = StockTrade()

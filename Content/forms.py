@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import Stock
 
-class StockTrade(forms.ModelForm):
+class StockTrade(forms.Form):
     ACTION_CHOICES = [
         ('buy', 'Buy'),
         ('sell', 'Sell'),
@@ -15,7 +15,3 @@ class StockTrade(forms.ModelForm):
     )
     action = forms.ChoiceField(choices=ACTION_CHOICES, label='Action')
     quantity = forms.IntegerField(min_value=1, label='Quantity')
-
-    class Meta:
-        model = Stock
-        fields = ['symbol', 'quantity', 'action']
