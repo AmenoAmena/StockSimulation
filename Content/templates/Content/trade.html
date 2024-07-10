@@ -1,0 +1,40 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block title %}
+
+    <title>Trade</title>
+    <link rel="stylesheet" href="{% static 'Content/css/trade.css' %}">
+
+{% endblock title %}
+
+
+
+{% block body %}
+
+    <header>
+        <h1>Stock Trading Game</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a style="cursor: pointer">{{ user.username }}</a></li>
+            <li><a href="{% url 'Content:index' %}">Portfolio</a></li>
+            <li><a href="{% url 'Content:trade' %}">Trade</a></li>
+            <li><a href="#performance">Performance</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="trade">
+            <h2>Trade Stocks</h2>
+            <form id="trade-form" method="post">
+                {% csrf_token %}
+                {{ form.symbol.label_tag }} {{ form.symbol }}
+                {{ form.quantity.label_tag }} {{ form.quantity }}
+                {{ form.action.label_tag }} {{ form.action }}
+                <button type="submit">Submit</button>
+            </form>
+        </section>    
+    </main>
+    
+
+{% endblock body %}

@@ -16,8 +16,8 @@
 <nav>
     <ul>
         <li><a style="cursor: pointer">{{ user.username }}</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#trade">Trade</a></li>
+        <li><a href="{% url 'Content:index' %}">Portfolio</a></li>
+        <li><a href="{% url 'Content:trade' %}">Trade</a></li>
         <li><a href="#performance">Performance</a></li>
     </ul>
 </nav>

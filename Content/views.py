@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from accounts.models import stock_user,UserStock
 from .prices import Price
 from django.contrib.auth.decorators import login_required
+from .forms import StockTrade
 
 # Create your views here.
 @login_required
@@ -23,3 +24,9 @@ def index(request):
         'user_stocks':user_stocks
     })
 
+@login_required
+def trade(request):
+    form = StockTrade()
+    return render(request,"Content/trade.html",{
+        'form':form
+    })
