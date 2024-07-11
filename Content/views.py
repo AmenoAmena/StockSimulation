@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from accounts.models import stock_user,UserStock,Stock
-from .prices import Price
+from .prices import get_price
 from django.contrib.auth.decorators import login_required
 from .forms import StockTrade
 from django.core.exceptions import ValidationError
@@ -103,4 +103,10 @@ def show_market(request):
     })
 
 def update_price(request):
-    pass
+    stocks = Stock.objects.all()
+    for stock in stocks:
+        new_price = get_price(stock.symbol)
+        stock.price = new_price
+        stock.save()
+
+    return redirect("Content:index")
