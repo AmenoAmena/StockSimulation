@@ -101,3 +101,6 @@ def show_market(request):
     return render(request, 'Content/market.html',{
         'stocks':stocks
     })
+
+def update_price(request):
+    pass
