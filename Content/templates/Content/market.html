@@ -1,20 +1,47 @@
 {% extends 'Content/base.html' %}
+{% load static %}
 
 {% block title %}
 
     <title>Prices</title>
+    <link rel="stylesheet" href="{% static 'Content/css/trade.css' %}">
 
 {% endblock title %}
 
 
 {% block body %}
 
-    {% for stock in stocks %}
-
-        <h1>{{stock.symbol}}</h1>
-        <h2>{{stock.price}}</h2>
-        <hr>
-
-    {% endfor %}
+<header>
+    <h1>Stock Trading Game</h1>
+</header>
+<nav>
+    <ul>
+        <li><a style="cursor: pointer">{{ user.username }}</a></li>
+        <li><a href="{% url 'Content:index' %}">Portfolio</a></li>
+        <li><a href="{% url 'Content:trade' %}">Trade</a></li>
+        <li><a href="{% url 'Content:market' %}">Market</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="trade">
+        <h2>Stock Market</h2>
+        {% for stock in stocks %}
+        <div class="overview-item">
+            <h1>{{stock.symbol}}</h1>
+            <h2>{{stock.price}}</h2>
+        </div>        
+        {% endfor %}
+    </section>    
+</main>
 
 {% endblock body %}
+
+
+
+
+
+
+
+
+
+
