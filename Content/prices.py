@@ -66,5 +66,5 @@ class Price:
     def meta_price(self):
         return self.get_price("META")
 
-#tracker = Price()
-#print(tracker.apple_price())
+tracker = Price()
+print(tracker.nvidia_price())

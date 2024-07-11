@@ -2,15 +2,11 @@
 {% load static %}
 
 {% block title %}
-
     <title>Prices</title>
     <link rel="stylesheet" href="{% static 'Content/css/trade.css' %}">
-
 {% endblock title %}
 
-
 {% block body %}
-
 <header>
     <h1>Stock Trading Game</h1>
 </header>
@@ -25,23 +21,13 @@
 <main>
     <section id="trade">
         <h2>Stock Market</h2>
-        {% for stock in stocks %}
-        <div class="overview-item">
-            <h1>{{stock.symbol}}</h1>
-            <h2>{{stock.price}}</h2>
-        </div>        
-        {% endfor %}
+        <div class="overview">
+            {% for stock in stocks %}
+            <div class="overview-item">
+                <h1>{{stock.symbol}} - ${{stock.price}}</h1>
+            </div>        
+            {% endfor %}
+        </div>
     </section>    
 </main>
-
 {% endblock body %}
-
-
-
-
-
-
-
-
-
-
