@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.core.cache import cache 
 
 class Stock(models.Model):
     SYMBOL_CHOICES = [
@@ -39,7 +40,7 @@ class stock_user(AbstractUser):
             cache.set(cache_key, total_value, timeout=600)
 
         return total_value
-        
+
 class UserStock(models.Model):
     user = models.ForeignKey(stock_user, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
