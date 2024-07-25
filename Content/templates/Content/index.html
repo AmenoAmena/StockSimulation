@@ -52,11 +52,9 @@
         <div class="overview">
                 {% for stock in user_stocks %}
                     <div class="overview-item">
-                        <h1>{{stock.stock}} - {{stock.quantity}}</h1>
-                        
-                    <div class="overview-item">
+                        <h1>{{stock.stock}} - {{stock.quantity}}</h1>  
+                    </div>                      
                 {% endfor %}
-            </div>
         </div>
     </section>
 </main>
