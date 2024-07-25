@@ -113,8 +113,9 @@ def update_price(request):
 
 
 def update_user_money(request):
-    users = await sync_to_async(lambda: list(stock_user.objects.all()))  
+    users =  stock_user.objects.all()  
     for user in users:
-        await sync_to_async(user.append_money)()
+        user.append_money()
+        user.save()
     
     return redirect("Content:index")
