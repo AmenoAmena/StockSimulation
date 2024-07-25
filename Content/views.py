@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from accounts.models import stock_user,UserStock,Stock
+from accounts.models import stock_user,UserStock,Stock,MoneyLog
 from .prices import get_price
 from django.contrib.auth.decorators import login_required
 from .forms import StockTrade
@@ -75,6 +75,7 @@ def buy_stock(user, stock, quantity):
         raise ValidationError("Insufficient funds to buy stock.")
 
     user.money -= total_cost
+    MoneyLog.objects.create(user=self.user, amount=self.user.money, timestamp=timezone.now())
     user.save()
     user_stock.save()
 
@@ -91,8 +92,10 @@ def sell_stock(user, stock, quantity):
 
     user_stock.quantity -= quantity
     if user_stock.quantity == 0:
+        MoneyLog.objects.create(user=self.user, amount=self.user.money, timestamp=timezone.now())
         user_stock.delete()
     else:
+        MoneyLog.objects.create(user=self.user, amount=self.user.money, timestamp=timezone.now())
         user_stock.save()
 
 
