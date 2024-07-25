@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.utils import timezone
-from django.core.cache import cache 
+import asyncio
 
 class Stock(models.Model):
     SYMBOL_CHOICES = [
@@ -26,20 +25,23 @@ class Stock(models.Model):
 
 class stock_user(AbstractUser):
     money = models.DecimalField(default=10000.00, decimal_places=2, max_digits=10)
+    current_and_yesterday_money = []
 
     def get_total_stock_value(self):
-        cache_key = f"user_{self.id}_total_stock_value"
-        total_value = cache.get(cache_key)
-
-        if total_value is None:
-            total_value = 0
-            stock_users = UserStock.objects.filter(user=self)
-            for stock_user in stock_users:
-                total_value += stock_user.quantity * stock_user.stock.price
-            
-            cache.set(cache_key, total_value, timeout=600)
-
+        total_value = 0
+        stock_users = UserStock.objects.filter(user=self)
+        for stock_user in stock_users:
+            total_value += stock_user.quantity * stock_user.stock.price
         return total_value
+
+
+    async def append_money(self):
+        money = await asyncio.to_thread(self.get_total_stock_value)
+        self.current_and_yesterday_money.append(money)
+        if len(self.current_and_yesterday_money) > 2:
+            self.current_and_yesterday_money = self.current_and_yesterday_money[-2:]
+
+
 
 class UserStock(models.Model):
     user = models.ForeignKey(stock_user, on_delete=models.CASCADE)
@@ -48,11 +50,3 @@ class UserStock(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.stock.symbol} ({self.quantity})"
-
-class MoneyLog(models.Model):
-    user = models.ForeignKey(stock_user, on_delete=models.CASCADE)
-    amount = models.DecimalField(decimal_places=2, max_digits=10)
-    timestamp = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.amount} at {self.timestamp}"

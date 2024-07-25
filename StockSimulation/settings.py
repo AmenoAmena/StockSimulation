@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'Content',
+
 ]
 
 MIDDLEWARE = [
@@ -69,16 +70,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
-}
-
-
-
 
 WSGI_APPLICATION = 'StockSimulation.wsgi.application'
 

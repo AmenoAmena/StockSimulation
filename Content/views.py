@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
-from django.utils import timezone
-from accounts.models import stock_user, UserStock, Stock, MoneyLog
-from .forms import StockTrade
+from accounts.models import stock_user,UserStock,Stock
 from .prices import get_price
+from django.contrib.auth.decorators import login_required
+from .forms import StockTrade
+from django.core.exceptions import ValidationError
 
+
+# Create your views here.
 @login_required
 def index(request):
     user = request.user
@@ -18,33 +19,37 @@ def index(request):
     user_stocks = UserStock.objects.filter(user=user)
     return render(request, 'Content/index.html', {
         'user_money': user_money,
-        'stock_value': stock_value,
-        'user_cash': user_cash,
-        'made_money': made_money,
-        'user_stocks': user_stocks
+        'stock_value':stock_value,
+        'user_cash':user_cash,
+        'made_money':made_money,
+        'user_stocks':user_stocks
     })
+
 
 @login_required
 def trade(request):
     user = request.user
     if request.method == 'POST':
+        print("Post works")
         form = StockTrade(request.POST)
         if form.is_valid():
             symbol = form.cleaned_data['symbol']
             quantity = form.cleaned_data['quantity']
             action = form.cleaned_data['action']
-            stock = Stock.objects.get(symbol=symbol)  
-
+            
             if action == 'buy':
+                print("Seeing buy")
                 try:
-                    buy_stock(user, stock, quantity)
+                    buy_stock(user, symbol, quantity)
                 except ValidationError as e:
                     form.add_error(None, e)
             elif action == 'sell':
                 try:
-                    sell_stock(user, stock, quantity)
+                    sell_stock(user, symbol, quantity)
                 except ValidationError as e:
                     form.add_error(None, e)
+            else:
+                pass
             return redirect('Content:index')
         else:
             return redirect('Content:trade')
@@ -53,10 +58,15 @@ def trade(request):
 
     return render(request, "Content/trade.html", {
         'form': form
-    })
+        })
+
 
 def buy_stock(user, stock, quantity):
-    user_stock, created = UserStock.objects.get_or_create(user=user, stock=stock)
+    user_stock = UserStock.objects.filter(user=user, stock=stock).first()
+    if user_stock:
+        user_stock.quantity += quantity
+    else:
+        user_stock = UserStock(user=user, stock=stock, quantity=quantity)
 
     stock_price = stock.price
     total_cost = stock_price * quantity
@@ -65,9 +75,7 @@ def buy_stock(user, stock, quantity):
         raise ValidationError("Insufficient funds to buy stock.")
 
     user.money -= total_cost
-    MoneyLog.objects.create(user=user, amount=user.money, timestamp=timezone.now())
     user.save()
-    user_stock.quantity += quantity
     user_stock.save()
 
 def sell_stock(user, stock, quantity):
@@ -79,7 +87,6 @@ def sell_stock(user, stock, quantity):
     total_gain = stock_price * quantity
 
     user.money += total_gain
-    MoneyLog.objects.create(user=user, amount=user.money, timestamp=timezone.now())
     user.save()
 
     user_stock.quantity -= quantity
@@ -88,17 +95,24 @@ def sell_stock(user, stock, quantity):
     else:
         user_stock.save()
 
+
 def show_market(request):
     stocks = Stock.objects.all()
-    return render(request, 'Content/market.html', {
-        'stocks': stocks
+    return render(request, 'Content/market.html',{
+        'stocks':stocks
     })
 
-def update_price(request):
-    stocks = Stock.objects.all()
+async def update_price(request):
+    stocks = await Stock.objects.all()
     for stock in stocks:
-        new_price = get_price(stock.symbol)
+        new_price = await get_price(stock.symbol)
         stock.price = new_price
-        stock.save()
+        await stock.save()
 
+    return redirect("Content:index")
+
+async def update_user_money(request):
+    users = await asyncio.to_thread(stock_user.objects.all)  
+    for user in users:
+        await asyncio.to_thread(user.append_money) 
     return redirect("Content:index")
