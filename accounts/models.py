@@ -63,6 +63,6 @@ class UserStock(models.Model):
 #            UserStock.objects.filter(id=existing_stock_user.id).update(quantity=existing_stock_user.quantity)
 #        else:
 #            super().save(*args, **kwargs)
-#
+
     def __str__(self):
         return f"{self.user.username} - {self.stock.symbol} ({self.quantity})"
