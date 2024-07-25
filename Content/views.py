@@ -5,8 +5,6 @@ from .prices import get_price
 from django.contrib.auth.decorators import login_required
 from .forms import StockTrade
 from django.core.exceptions import ValidationError
-import asyncio
-#from django.utils.asyncio import sync_to_async
 
 
 # Create your views here.
@@ -105,11 +103,11 @@ def show_market(request):
     })
 
 def update_price(request):
-    stocks = await Stock.objects.all()
+    stocks = Stock.objects.all()
     for stock in stocks:
-        new_price = await get_price(stock.symbol)
+        new_price = get_price(stock.symbol)
         stock.price = new_price
-        await stock.save()
+        stock.save()
 
     return redirect("Content:index")
 

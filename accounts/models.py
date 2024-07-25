@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-import asyncio
 
 class Stock(models.Model):
     SYMBOL_CHOICES = [
@@ -25,7 +24,7 @@ class Stock(models.Model):
 
 class stock_user(AbstractUser):
     money = models.DecimalField(default=10000.00, decimal_places=2, max_digits=10)
-    current_and_yesterday_money = models.JSONField(default=list) 
+    current_and_yesterday_money = []
 
     def get_total_stock_value(self):
         total_value = 0
@@ -36,10 +35,10 @@ class stock_user(AbstractUser):
 
 
     def append_money(self):
-        money = await asyncio.to_thread(self.get_total_stock_value)
-        self.current_and_yesterday_money.append(money)
-        if len(self.current_and_yesterday_money) > 2:
-            self.current_and_yesterday_money = self.current_and_yesterday_money[-2:]
+        money = self.get_total_stock_value()
+        current_and_yesterday_money.append(money)
+        if len(current_and_yesterday_money) > 2:
+            current_and_yesterday_money = current_and_yesterday_money[-2:]
 
 
 
