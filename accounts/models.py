@@ -25,7 +25,7 @@ class Stock(models.Model):
 
 class stock_user(AbstractUser):
     money = models.DecimalField(default=10000.00, decimal_places=2, max_digits=10)
-    current_and_yesterday_money = []
+    current_and_yesterday_money = models.JSONField(default=list) 
 
     def get_total_stock_value(self):
         total_value = 0
@@ -35,7 +35,7 @@ class stock_user(AbstractUser):
         return total_value
 
 
-    async def append_money(self):
+    def append_money(self):
         money = await asyncio.to_thread(self.get_total_stock_value)
         self.current_and_yesterday_money.append(money)
         if len(self.current_and_yesterday_money) > 2:

@@ -5,6 +5,8 @@ from .prices import get_price
 from django.contrib.auth.decorators import login_required
 from .forms import StockTrade
 from django.core.exceptions import ValidationError
+import asyncio
+#from django.utils.asyncio import sync_to_async
 
 
 # Create your views here.
@@ -102,7 +104,7 @@ def show_market(request):
         'stocks':stocks
     })
 
-async def update_price(request):
+def update_price(request):
     stocks = await Stock.objects.all()
     for stock in stocks:
         new_price = await get_price(stock.symbol)
@@ -111,8 +113,10 @@ async def update_price(request):
 
     return redirect("Content:index")
 
-async def update_user_money(request):
-    users = await asyncio.to_thread(stock_user.objects.all)  
+
+def update_user_money(request):
+    users = await sync_to_async(lambda: list(stock_user.objects.all()))  
     for user in users:
-        await asyncio.to_thread(user.append_money) 
+        await sync_to_async(user.append_money)()
+    
     return redirect("Content:index")
