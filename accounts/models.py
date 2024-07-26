@@ -24,7 +24,8 @@ class Stock(models.Model):
 
 class stock_user(AbstractUser):
     money = models.DecimalField(default=10000.00, decimal_places=2, max_digits=10)
-    current_and_yesterday_money = []
+    today_money = models.DecimalField(default=10000,decimal_places=2,max_digits=10)
+    yesterday_money = models.DecimalField(blank=True,null=True,decimal_places=2,max_digits=10)
 
     def get_total_stock_value(self):
         total_value = 0
@@ -34,12 +35,10 @@ class stock_user(AbstractUser):
         return total_value
 
 
-    def append_money(self):
-        money = self.get_total_stock_value()
-        current_and_yesterday_money.append(money)
-        if len(current_and_yesterday_money) > 2:
-            current_and_yesterday_money = current_and_yesterday_money[-2:]
-
+    def change_money(self):
+        self.yesterday_money = self.today_money
+        self.today_money = self.money
+        self.save()
 
 
 class UserStock(models.Model):

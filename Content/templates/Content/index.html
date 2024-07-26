@@ -1,62 +1,66 @@
-{% extends 'Content/base.html' %}
-{% load static %}
-
-{% block title %}
+{% extends 'Content/base.html' %} {% load static %} {% block title %}
 
 <title>Portfolio</title>
-<link rel="stylesheet" href="{% static 'Content/css/index.css' %}">
+<link rel="stylesheet" href="{% static 'Content/css/index.css' %}" />
 
-{% endblock title %}
-
-{% block body %}
+{% endblock title %} {% block body %}
 
 <header>
-    <h1>Stock Trading Game</h1>
+  <h1>Stock Trading Game</h1>
 </header>
 <nav>
-    <ul>
-        <li><a style="cursor: pointer">{{ user.username }}</a></li>
-        <li><a href="{% url 'Content:index' %}">Portfolio</a></li>
-        <li><a href="{% url 'Content:trade' %}">Trade</a></li>
-        <li><a href="{% url 'Content:market' %}">Market</a></li>
-        <li><a href="{% url 'accounts:logout' %}"><i class="fa-solid fa-right-from-bracket"></i></a></li>
-    </ul>
+  <ul>
+    <li><a style="cursor: pointer">{{ user.username }}</a></li>
+    <li><a href="{% url 'Content:index' %}">Portfolio</a></li>
+    <li><a href="{% url 'Content:trade' %}">Trade</a></li>
+    <li><a href="{% url 'Content:market' %}">Market</a></li>
+    <li>
+      <a href="{% url 'accounts:logout' %}"
+        ><i class="fa-solid fa-right-from-bracket"></i
+      ></a>
+    </li>
+  </ul>
 </nav>
 <main>
-    <section id="portfolio">
-        <h2>Portfolio Overview</h2>
-        <div class="overview">
-            <div class="overview-item">
-                <span>Account Value</span>
-                <strong>${{user_money}}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Today's Change</span>
-                <strong>$0.00 (0.00%)</strong>
-            </div>
-            <div class="overview-item">
-                <span>Stock Value</span>
-                <strong>${{ stock_value }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Buying Power</span>
-                <strong>$10,000.00</strong>
-            </div>
-            <div class="overview-item">
-                <span>Cash</span>
-                <strong>${{user_cash}}</strong>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="overview">
-                {% for stock in user_stocks %}
-                    <div class="overview-item">
-                        <h1>{{stock.stock}} - {{stock.quantity}}</h1>  
-                    </div>                      
-                {% endfor %}
-        </div>
-    </section>
+  <section id="portfolio">
+    <h2>Portfolio Overview</h2>
+    <div class="overview">
+
+      <div class="overview-item">
+        <span>Account Value</span>
+        <strong>${{user_money}}</strong>
+      </div>
+
+      <div class="overview-item">
+        <span>Yesterday Account Value</span>
+        <strong>${{ yesterday_money }}</strong>
+      </div>
+
+      <div class="overview-item">
+        <span>Today's Change</span>
+        <strong>${{ daily_change }} ({{ daily_change_percentage }}%)</strong>
+      </div>
+      <div class="overview-item">
+        <span>Stock Value</span>
+        <strong>${{ stock_value }}</strong>
+      </div>
+
+      <div class="overview-item">
+        <span>Cash</span>
+        <strong>${{user_cash}}</strong>
+      </div>
+
+    </div>
+  </section>
+  <section>
+    <div class="overview">
+      {% for stock in user_stocks %}
+      <div class="overview-item">
+        <h1>{{stock.stock}} - {{stock.quantity}}</h1>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
 </main>
 
 {% endblock body %}

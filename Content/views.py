@@ -17,12 +17,22 @@ def index(request):
     user_cash = user.money
     made_money = user_money - 10000
     user_stocks = UserStock.objects.filter(user=user)
+
+    daily_change = user.today_money - user.yesterday_money  
+    daily_change_percentage = daily_change / user.yesterday_money  
+    rounded_daily_change_percentage = round(daily_change_percentage * 100, 2)
+
+    yesterday_money = user.yesterday_money
+
     return render(request, 'Content/index.html', {
         'user_money': user_money,
         'stock_value':stock_value,
         'user_cash':user_cash,
         'made_money':made_money,
-        'user_stocks':user_stocks
+        'user_stocks':user_stocks,
+        'daily_change':daily_change,
+        'daily_change_percentage':rounded_daily_change_percentage,
+        'yesterday_money':yesterday_money,
     })
 
 
@@ -115,7 +125,6 @@ def update_price(request):
 def update_user_money(request):
     users =  stock_user.objects.all()  
     for user in users:
-        user.append_money()
-        user.save()
-    
+        user.change_money()
+
     return redirect("Content:index")
